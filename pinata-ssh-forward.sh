@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/sh
 
 IMAGE_NAME=pinata-sshd
 CONTAINER_NAME=pinata-sshd
@@ -12,6 +12,7 @@ mkdir -p ${LOCAL_STATE}
 docker run --name ${CONTAINER_NAME} \
   -v ~/.ssh/id_rsa.pub:/root/.ssh/authorized_keys \
   -v ${LOCAL_STATE}:/tmp \
+  --rm \
   -d -p ${LOCAL_PORT}:22 ${IMAGE_NAME} > /dev/null
 
 IP=`docker inspect --format '{{(index (index .NetworkSettings.Ports "22/tcp") 0).HostIp }}' ${CONTAINER_NAME}`
